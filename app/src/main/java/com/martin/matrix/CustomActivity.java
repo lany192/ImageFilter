@@ -71,15 +71,6 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
                             @Override
                             public void accept(@NonNull List<ImageItem> imageItems) {
                                 imageView.setImageURI(Uri.fromFile(new File(imageItems.get(0).getPath())));
-
-                                seekBarH.setProgress(128);
-                                saturationSeekBar.setProgress(128);
-                                seekBarR.setProgress(128);
-                                seekBarG.setProgress(128);
-                                seekBarB.setProgress(128);
-                                seekBarA.setProgress(128);
-                                contrastSeekBar.setProgress(0);
-                                lightnessSeekBar.setProgress(255);
                             }
                         });
             }
@@ -121,25 +112,39 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         colorText.setText("颜色值：" + color);
         colorView.setBackgroundColor(Color.parseColor(color));
 
-        float mHueValue = (H - 128f) * 1.0f / 128f * 180;
+        float hue = (H - 128f) * 1.0f / 128f * 180;
         float mSaturationValue = saturation / 128f;
-
         //亮度，值是处于0-255之间的整型数值
         float brightness = lightness - 255;
 
+        //对比度
+        float contrastValue = (contrast + 1) * 1.0f;
+        imageView.setColorFilter(getFilter(contrastValue, hue, mSaturationValue, brightness, caculate(R), caculate(G), caculate(B), caculate(A)));
+
+        String info = "A:" + A + " R:" + R + " B:" + B + " G:" + G
+                + "\n色相:" + hue
+                + " 饱和度:" + mSaturationValue
+                + " 对比度:" + contrastValue
+                + " 亮度:" + brightness;
+        showInfoText.setText(info);
+    }
+
+
+    private ColorMatrixColorFilter getFilter(float contrast, float hue, float saturation, float brightness,
+                                             float R, float G, float B, float A) {
         //设置色相
         ColorMatrix hueMatrix = new ColorMatrix();
-        hueMatrix.setRotate(0, mHueValue);
-        hueMatrix.setRotate(1, mHueValue);
-        hueMatrix.setRotate(2, mHueValue);
+        hueMatrix.setRotate(0, hue);
+        hueMatrix.setRotate(1, hue);
+        hueMatrix.setRotate(2, hue);
 
         //设置饱和度
         ColorMatrix saturationMatrix = new ColorMatrix();
-        saturationMatrix.setSaturation(mSaturationValue);
+        saturationMatrix.setSaturation(saturation);
 
         //ARGB
         ColorMatrix argbMatrix = new ColorMatrix();
-        argbMatrix.setScale(caculate(R), caculate(G), caculate(B), caculate(A));
+        argbMatrix.setScale(R, G, B, A);
 
         //亮度(N取值为-255到255)
         ColorMatrix brightnessMatrix = new ColorMatrix(new float[]{
@@ -150,11 +155,10 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         });
 
         //对比度
-        float contrastValue = (contrast + 1) * 1.0f;
         ColorMatrix contrastMatrix = new ColorMatrix(new float[]{
-                contrastValue, 0, 0, 0, 128 * (1 - contrastValue),
-                0, contrastValue, 0, 0, 128 * (1 - contrastValue),
-                0, 0, contrastValue, 0, 128 * (1 - contrastValue),
+                contrast, 0, 0, 0, 128 * (1 - contrast),
+                0, contrast, 0, 0, 128 * (1 - contrast),
+                0, 0, contrast, 0, 128 * (1 - contrast),
                 0, 0, 0, 1, 0
         });
 
@@ -164,16 +168,9 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         filter.postConcat(saturationMatrix);
         filter.postConcat(hueMatrix);
         filter.postConcat(brightnessMatrix);
-
-        imageView.setColorFilter(new ColorMatrixColorFilter(filter));
-
-        String info = "A:" + A + " R:" + R + " B:" + B + " G:" + G
-                + "\n色相:" + mHueValue
-                + " 饱和度:" + mSaturationValue
-                + " 对比度:" + contrastValue
-                + " 亮度:" + brightness;
-        showInfoText.setText(info);
+        return new ColorMatrixColorFilter(filter);
     }
+
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {

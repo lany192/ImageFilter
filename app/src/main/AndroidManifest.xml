@@ -15,7 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FilterActivity" />
+        <activity
+            android:name=".FilterActivity"
+            android:label="现有滤镜" />
         <activity
             android:name=".CustomActivity"
             android:label="自定义滤镜" />
