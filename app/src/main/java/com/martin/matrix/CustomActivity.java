@@ -22,6 +22,9 @@ import java.util.List;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
+/**
+ * https://www.cnblogs.com/tinytiny/p/3317372.html
+ */
 public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
     private ImageView imageView;
     private SeekBar seekBarH;
