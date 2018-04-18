@@ -38,7 +38,7 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_color_hue);
+        setContentView(R.layout.activity_custom);
         imageView = findViewById(R.id.imageView);
         colorView = findViewById(R.id.color_view);
         colorText = findViewById(R.id.color_text);
@@ -158,21 +158,21 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
                 0, 0, 0, 1, 0
         });
 
-        ColorMatrix all = new ColorMatrix();
-        all.postConcat(contrastMatrix);
-        all.postConcat(argbMatrix);
-        all.postConcat(saturationMatrix);
-        all.postConcat(hueMatrix);
-        all.postConcat(brightnessMatrix);
+        ColorMatrix filter = new ColorMatrix();
+        filter.postConcat(contrastMatrix);
+        filter.postConcat(argbMatrix);
+        filter.postConcat(saturationMatrix);
+        filter.postConcat(hueMatrix);
+        filter.postConcat(brightnessMatrix);
 
-        showInfoText.setText("A:" + A + " R:" + R + " B:" + B + " G:" + G
-                + " \n色相:" + mHueValue
+        imageView.setColorFilter(new ColorMatrixColorFilter(filter));
+
+        String info = "A:" + A + " R:" + R + " B:" + B + " G:" + G
+                + "\n色相:" + mHueValue
                 + " 饱和度:" + mSaturationValue
                 + " 对比度:" + contrastValue
-                + " 亮度:" + brightness);
-
-        imageView.setColorFilter(new ColorMatrixColorFilter(all));
-
+                + " 亮度:" + brightness;
+        showInfoText.setText(info);
     }
 
     @Override

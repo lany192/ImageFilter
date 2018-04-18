@@ -24,7 +24,7 @@ public class FilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_color_filter);
+        setContentView(R.layout.activity_filter);
 
         recyclerView = findViewById(R.id.mRecyclerView);
         inItFilters();
