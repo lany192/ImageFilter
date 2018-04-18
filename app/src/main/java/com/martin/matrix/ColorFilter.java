@@ -92,11 +92,11 @@ public class ColorFilter {
 
     // 黑白
     public static final float HEIBAI[] = {
-            0.8f, 1.6f, 0.2f, 0.0f,
-            -163.9f, 0.8f, 1.6f, 0.2f,
-            0.0f, -163.9f, 0.8f, 1.6f,
-            0.2f, 0.0f, -163.9f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f};
+            //R  ,  G,    B,   A,    offset
+            0.8f, 1.6f, 0.2f, 0.0f, -163.9f,// red
+            0.8f, 1.6f, 0.2f, 0.0f, -163.9f,// green
+            0.8f, 1.6f, 0.2f, 0.0f, -163.9f,// blue
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};  // alpha
 
     // 怀旧
     public static final float HUAJIU[] = {

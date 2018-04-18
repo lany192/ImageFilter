@@ -5,7 +5,9 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -23,14 +25,13 @@ import io.reactivex.functions.Consumer;
 public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
     private ImageView imageView;
     private SeekBar seekBarH;
-    private SeekBar seekBarS;
+    private SeekBar saturationSeekBar;
     private SeekBar seekBarR;
     private SeekBar seekBarG;
     private SeekBar seekBarB;
     private SeekBar seekBarA;
-    private SeekBar seekBarL;
-    //对比度
-    private SeekBar seekBarC;
+    private SeekBar lightnessSeekBar;
+    private SeekBar contrastSeekBar;
     private View colorView;
     private TextView colorText, showInfoText;
 
@@ -48,18 +49,18 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         seekBarB = findViewById(R.id.bar_B);
         seekBarA = findViewById(R.id.bar_A);
         seekBarH = findViewById(R.id.bar_hue);
-        seekBarS = findViewById(R.id.bar_saturation);
-        seekBarC = findViewById(R.id.bar_contrast);
-        seekBarL = findViewById(R.id.bar_lightness);
+        saturationSeekBar = findViewById(R.id.bar_saturation);
+        contrastSeekBar = findViewById(R.id.bar_contrast);
+        lightnessSeekBar = findViewById(R.id.bar_lightness);
 
         seekBarH.setOnSeekBarChangeListener(this);
-        seekBarS.setOnSeekBarChangeListener(this);
+        saturationSeekBar.setOnSeekBarChangeListener(this);
         seekBarR.setOnSeekBarChangeListener(this);
         seekBarG.setOnSeekBarChangeListener(this);
         seekBarB.setOnSeekBarChangeListener(this);
         seekBarA.setOnSeekBarChangeListener(this);
-        seekBarC.setOnSeekBarChangeListener(this);
-        seekBarL.setOnSeekBarChangeListener(this);
+        contrastSeekBar.setOnSeekBarChangeListener(this);
+        lightnessSeekBar.setOnSeekBarChangeListener(this);
 
         findViewById(R.id.my_text_view).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,22 +73,37 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
                                 imageView.setImageURI(Uri.fromFile(new File(imageItems.get(0).getPath())));
 
                                 seekBarH.setProgress(128);
-                                seekBarS.setProgress(128);
+                                saturationSeekBar.setProgress(128);
                                 seekBarR.setProgress(128);
                                 seekBarG.setProgress(128);
                                 seekBarB.setProgress(128);
                                 seekBarA.setProgress(128);
-                                seekBarC.setProgress(128);
-                                seekBarL.setProgress(128);
+                                contrastSeekBar.setProgress(0);
+                                lightnessSeekBar.setProgress(255);
                             }
                         });
             }
         });
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     protected float caculate(int progress) {
-        float scale = progress / 128f;
-        return scale;
+        return progress / 128f;
     }
 
     @Override
@@ -96,22 +112,20 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         int R = seekBarR.getProgress();
         int G = seekBarG.getProgress();
         int B = seekBarB.getProgress();
-        int C = seekBarC.getProgress();
+        int contrast = contrastSeekBar.getProgress();
         int H = seekBarH.getProgress();
-        int S = seekBarS.getProgress();
-        int L = seekBarL.getProgress();
+        int saturation = saturationSeekBar.getProgress();
+        int lightness = lightnessSeekBar.getProgress();
 
         String color = ("#" + Integer.toHexString(A) + Integer.toHexString(R) + Integer.toHexString(G) + Integer.toHexString(B)).toUpperCase();
         colorText.setText("颜色值：" + color);
         colorView.setBackgroundColor(Color.parseColor(color));
 
-
         float mHueValue = (H - 128f) * 1.0f / 128f * 180;
-        float mSaturationValue = S / 128f;
-        //对比度
-        float contrastValue = C / 128f;
+        float mSaturationValue = saturation / 128f;
+
         //亮度，值是处于0-255之间的整型数值
-        float brightness = L / 128f;
+        float brightness = lightness - 255;
 
         //设置色相
         ColorMatrix hueMatrix = new ColorMatrix();
@@ -127,16 +141,21 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         ColorMatrix argbMatrix = new ColorMatrix();
         argbMatrix.setScale(caculate(R), caculate(G), caculate(B), caculate(A));
 
-        //亮度
-        ColorMatrix brightnessMatrix = new ColorMatrix();
-        brightnessMatrix.setScale(brightness, brightness, brightness, 1);
+        //亮度(N取值为-255到255)
+        ColorMatrix brightnessMatrix = new ColorMatrix(new float[]{
+                1, 0, 0, 0, brightness,
+                0, 1, 0, 0, brightness,
+                0, 0, 1, 0, brightness,
+                0, 0, 0, 1, 0
+        });
 
         //对比度
+        float contrastValue = (contrast + 1) * 1.0f;
         ColorMatrix contrastMatrix = new ColorMatrix(new float[]{
-                contrastValue, 0, 0, 0, 0,
-                0, contrastValue, 0, 0, 0,
-                0, 0, contrastValue, 0, 0,
-                0, 0, 0, contrastValue, 0
+                contrastValue, 0, 0, 0, 128 * (1 - contrastValue),
+                0, contrastValue, 0, 0, 128 * (1 - contrastValue),
+                0, 0, contrastValue, 0, 128 * (1 - contrastValue),
+                0, 0, 0, 1, 0
         });
 
         ColorMatrix all = new ColorMatrix();
@@ -146,7 +165,11 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         all.postConcat(hueMatrix);
         all.postConcat(brightnessMatrix);
 
-        showInfoText.setText("A:" + A + " R:" + R + " B:" + B + " G:" + G + " \n色相:" + mHueValue + " 饱和度:" + mSaturationValue + " 对比度:" + contrastValue + " 亮度:" + brightness);
+        showInfoText.setText("A:" + A + " R:" + R + " B:" + B + " G:" + G
+                + " \n色相:" + mHueValue
+                + " 饱和度:" + mSaturationValue
+                + " 对比度:" + contrastValue
+                + " 亮度:" + brightness);
 
         imageView.setColorFilter(new ColorMatrixColorFilter(all));
 
