@@ -86,8 +86,18 @@ public class ColorFilter {
         Canvas canvas = new Canvas(resource);
         canvas.drawBitmap(bitmap, 0, 0, paint);
         if (isRecycle)
-            BitmapUtils.destroyBitmap(bitmap);
+            destroyBitmap(bitmap);
         return resource;
+    }
+
+    public static void destroyBitmap(Bitmap bitmap) {
+        if (bitmap != null) {
+            Bitmap b = bitmap;
+            if (b != null && !b.isRecycled()) {
+                b.recycle();
+            }
+            bitmap = null;
+        }
     }
 
     // 黑白
@@ -100,35 +110,31 @@ public class ColorFilter {
 
     // 怀旧
     public static final float HUAJIU[] = {
-            0.2f, 0.5f, 0.1f, 0.0f,
-            40.8f, 0.2f, 0.5f, 0.1f,
-            0.0f, 40.8f, 0.2f, 0.5f,
-            0.1f, 0.0f, 40.8f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f};
+            0.2f, 0.5f, 0.1f, 0.0f, 40.8f,
+            0.2f, 0.5f, 0.1f, 0.0f, 40.8f,
+            0.2f, 0.5f, 0.1f, 0.0f, 40.8f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
 
     // 哥特
     public static final float GETE[] = {
-            1.9f, -0.3f, -0.2f, 0.0f,
-            -87.0f, -0.2f, 1.7f, -0.1f,
-            0.0f, -87.0f, -0.1f, -0.6f,
-            2.0f, 0.0f, -87.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f};
+            1.9f, -0.3f, -0.2f, 0.0f, -87.0f,
+            -0.2f, 1.7f, -0.1f, 0.0f, -87.0f,
+            -0.1f, -0.6f, 2.0f, 0.0f, -87.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
 
     // 淡雅
     public static final float DANYA[] = {
-            0.6f, 0.3f, 0.1f, 0.0f,
-            73.3f, 0.2f, 0.7f, 0.1f,
-            0.0f, 73.3f, 0.2f, 0.3f,
-            0.4f, 0.0f, 73.3f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f};
+            0.6f, 0.3f, 0.1f, 0.0f, 73.3f,
+            0.2f, 0.7f, 0.1f, 0.0f, 73.3f,
+            0.2f, 0.3f, 0.4f, 0.0f, 73.3f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
 
     // 蓝调
     public static final float LANDIAO[] = {
-            2.1f, -1.4f, 0.6f, 0.0f,
-            -71.0f, -0.3f, 2.0f, -0.3f,
-            0.0f, -71.0f, -1.1f, -0.2f,
-            2.6f, 0.0f, -71.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f};
+            2.1f, -1.4f, 0.6f, 0.0f, -71.0f,
+            -0.3f, 2.0f, -0.3f, 0.0f, -71.0f,
+            -1.1f, -0.2f, 2.6f, 0.0f, -71.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
 
     // 光晕
     public static final float GUANGYUN[] = {
@@ -139,67 +145,81 @@ public class ColorFilter {
 
     // 梦幻
     public static final float MENGHUAN[] = {
-            0.8f, 0.3f, 0.1f, 0.0f,
-            46.5f, 0.1f, 0.9f, 0.0f,
-            0.0f, 46.5f, 0.1f, 0.3f,
-            0.7f, 0.0f, 46.5f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f};
+            0.8f, 0.3f, 0.1f, 0.0f, 46.5f,
+            0.1f, 0.9f, 0.0f, 0.0f, 46.5f,
+            0.1f, 0.3f, 0.7f, 0.0f, 46.5f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
 
     // 酒红
     public static final float JIUHONG[] = {
-            1.2f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.9f, 0.0f,
-            0.0f, 0.0f, 0.0f, 0.0f,
-            0.8f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f};
+            1.2f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.9f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.8f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
     // 胶片
     public static final float JIAOPIAN1[] = {
-            -1.0f, 0.0f, 0.0f, 0.0f,
-            255.0f, 0.0f, -1.0f, 0.0f,
-            0.0f, 255.0f, 0.0f, 0.0f,
-            -1.0f, 0.0f, 255.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f};
+            -1.0f, 0.0f, 0.0f, 0.0f, 255.0f,
+            0.0f, -1.0f, 0.0f, 0.0f, 255.0f,
+            0.0f, 0.0f, -1.0f, 0.0f, 255.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
     // 湖光掠影
     public static final float HUGUANG[] = {
-            0.8f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 0.0f,
-            0.9f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f};
+            0.8f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.9f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
     // 褐片
-    public static final float HEPIAN[] = {1.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.8f, 0.0f, 0.0f,
+    public static final float HEPIAN[] = {
+            1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.8f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.8f, 0.0f, 0.0f,
             0, 0, 0, 1.0f, 0};
     // 复古
-    public static final float FUGU[] = {0.9f, 0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
+    public static final float FUGU[] = {
+            0.9f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.8f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
             0, 0, 0, 1.0f, 0};
     // 泛黄
-    public static final float FANHUANG[] = {1.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f,
-            0.0f, 0, 0, 0, 1.0f, 0};
+    public static final float FANHUANG[] = {
+            1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
+            0, 0, 0, 1.0f, 0};
     // 传统
-    public static final float CHUANTONG[] = {1.0f, 0.0f, 0.0f, 0,
-            -10f, 0.0f, 1.0f, 0.0f, 0, -10f, 0.0f, 0.0f, 1.0f, 0, -10f, 0, 0,
-            0, 1, 0};
+    public static final float CHUANTONG[] = {
+            1.0f, 0.0f, 0.0f, 0, -10f,
+            0.0f, 1.0f, 0.0f, 0, -10f,
+            0.0f, 0.0f, 1.0f, 0, -10f,
+            0, 0, 0, 1, 0};
     // 胶片2
-    public static final float JIAOPIAN2[] = {0.71f, 0.2f, 0.0f,
-            0.0f, 60.0f, 0.0f, 0.94f, 0.0f, 0.0f, 60.0f, 0.0f, 0.0f, 0.62f,
-            0.0f, 60.0f, 0, 0, 0, 1.0f, 0};
+    public static final float JIAOPIAN2[] = {
+            0.71f, 0.2f, 0.0f, 0.0f, 60.0f,
+            0.0f, 0.94f, 0.0f, 0.0f, 60.0f,
+            0.0f, 0.0f, 0.62f, 0.0f, 60.0f,
+            0, 0, 0, 1.0f, 0};
     // 锐色
-    public static final float RUISE[] = {4.8f, -1.0f, -0.1f, 0,
-            -388.4f, -0.5f, 4.4f, -0.1f, 0, -388.4f, -0.5f, -1.0f, 5.2f, 0,
-            -388.4f, 0, 0, 0, 1.0f, 0};
+    public static final float RUISE[] = {
+            4.8f, -1.0f, -0.1f, 0, -388.4f,
+            -0.5f, 4.4f, -0.1f, 0, -388.4f,
+            -0.5f, -1.0f, 5.2f, 0, -388.4f,
+            0, 0, 0, 1.0f, 0};
     // 清宁
-    public static final float QINGNING[] = {0.9f, 0, 0, 0, 0, 0,
-            1.1f, 0, 0, 0, 0, 0, 0.9f, 0, 0, 0, 0, 0, 1.0f, 0};
+    public static final float QINGNING[] = {
+            0.9f, 0, 0, 0, 0,
+            0, 1.1f, 0, 0, 0, 0,
+            0, 0.9f, 0, 0, 0,
+            0, 0, 1.0f, 0};
     // 浪漫
-    public static final float LANGMAN[] = {0.9f, 0, 0, 0, 63.0f,
-            0, 0.9f, 0, 0, 63.0f, 0, 0, 0.9f, 0, 63.0f, 0, 0, 0, 1.0f, 0};
+    public static final float LANGMAN[] = {
+            0.9f, 0, 0, 0, 63.0f,
+            0, 0.9f, 0, 0, 63.0f,
+            0, 0, 0.9f, 0, 63.0f,
+            0, 0, 0, 1.0f, 0};
     // 夜色
-    public static final float YESE[] = {1.0f, 0.0f, 0.0f, 0.0f,
-            -66.6f, 0.0f, 1.1f, 0.0f, 0.0f, -66.6f, 0.0f, 0.0f, 1.0f, 0.0f,
-            -66.6f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
-
-
+    public static final float YESE[] = {
+            1.0f, 0.0f, 0.0f, 0.0f, -66.6f,
+            0.0f, 1.1f, 0.0f, 0.0f, -66.6f,
+            0.0f, 0.0f, 1.0f, 0.0f, -66.6f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};
 }
