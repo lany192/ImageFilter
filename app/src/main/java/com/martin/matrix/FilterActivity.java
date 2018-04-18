@@ -48,24 +48,24 @@ public class FilterActivity extends AppCompatActivity {
     }
 
     private void inItFilters() {
-        filters.add(new FilterInfo("黑白", ColorFilter.colormatrix_heibai));
-        filters.add(new FilterInfo("怀旧", ColorFilter.colormatrix_huajiu));
-        filters.add(new FilterInfo("哥特", ColorFilter.colormatrix_gete));
-        filters.add(new FilterInfo("淡雅", ColorFilter.colormatrix_danya));
-        filters.add(new FilterInfo("蓝调", ColorFilter.colormatrix_landiao));
-        filters.add(new FilterInfo("光晕", ColorFilter.colormatrix_guangyun));
-        filters.add(new FilterInfo("梦幻", ColorFilter.colormatrix_menghuan));
-        filters.add(new FilterInfo("酒红", ColorFilter.colormatrix_jiuhong));
-        filters.add(new FilterInfo("胶片", ColorFilter.colormatrix_fanse));
-        filters.add(new FilterInfo("湖光掠影", ColorFilter.colormatrix_huguang));
-        filters.add(new FilterInfo("褐片", ColorFilter.colormatrix_hepian));
-        filters.add(new FilterInfo("复古", ColorFilter.colormatrix_fugu));
-        filters.add(new FilterInfo("泛黄", ColorFilter.colormatrix_huan_huang));
-        filters.add(new FilterInfo("传统", ColorFilter.colormatrix_chuan_tong));
-        filters.add(new FilterInfo("胶片2", ColorFilter.colormatrix_jiao_pian));
-        filters.add(new FilterInfo("锐色", ColorFilter.colormatrix_ruise));
-        filters.add(new FilterInfo("清宁", ColorFilter.colormatrix_qingning));
-        filters.add(new FilterInfo("浪漫", ColorFilter.colormatrix_langman));
-        filters.add(new FilterInfo("夜色", ColorFilter.colormatrix_yese));
+        filters.add(new FilterInfo("黑白", ColorFilter.HEIBAI));
+        filters.add(new FilterInfo("怀旧", ColorFilter.HUAJIU));
+        filters.add(new FilterInfo("哥特", ColorFilter.GETE));
+        filters.add(new FilterInfo("淡雅", ColorFilter.DANYA));
+        filters.add(new FilterInfo("蓝调", ColorFilter.LANDIAO));
+        filters.add(new FilterInfo("光晕", ColorFilter.GUANGYUN));
+        filters.add(new FilterInfo("梦幻", ColorFilter.MENGHUAN));
+        filters.add(new FilterInfo("酒红", ColorFilter.JIUHONG));
+        filters.add(new FilterInfo("胶片", ColorFilter.JIAOPIAN1));
+        filters.add(new FilterInfo("湖光掠影", ColorFilter.HUGUANG));
+        filters.add(new FilterInfo("褐片", ColorFilter.HEPIAN));
+        filters.add(new FilterInfo("复古", ColorFilter.FUGU));
+        filters.add(new FilterInfo("泛黄", ColorFilter.FANHUANG));
+        filters.add(new FilterInfo("传统", ColorFilter.CHUANTONG));
+        filters.add(new FilterInfo("胶片2", ColorFilter.JIAOPIAN2));
+        filters.add(new FilterInfo("锐色", ColorFilter.RUISE));
+        filters.add(new FilterInfo("清宁", ColorFilter.QINGNING));
+        filters.add(new FilterInfo("浪漫", ColorFilter.LANGMAN));
+        filters.add(new FilterInfo("夜色", ColorFilter.YESE));
     }
 }
