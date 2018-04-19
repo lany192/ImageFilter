@@ -66,6 +66,7 @@ public class FilterActivity extends AppCompatActivity {
 
 
     private void inItFilters() {
+        filters.add(new FilterInfo("原图", ColorFilter.YUANTU));
         filters.add(new FilterInfo("黑白", ColorFilter.HEIBAI));
         filters.add(new FilterInfo("怀旧", ColorFilter.HUAJIU));
         filters.add(new FilterInfo("哥特", ColorFilter.GETE));

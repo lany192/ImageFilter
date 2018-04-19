@@ -100,6 +100,14 @@ public class ColorFilter {
         }
     }
 
+    // 原图
+    public static final float YUANTU[] = {
+            //R  ,  G,    B,   A,    offset
+            1.0f, 0.0f, 0.0f, 0.0f, 0.0f,// red
+            0.0f, 1.0f, 0.0f, 0.0f, 0.0f,// green
+            0.0f, 0.0f, 1.0f, 0.0f, 0.0f,// blue
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f};// alpha
+
     // 黑白
     public static final float HEIBAI[] = {
             //R  ,  G,    B,   A,    offset
