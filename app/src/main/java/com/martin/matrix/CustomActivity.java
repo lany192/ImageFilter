@@ -106,29 +106,26 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         int R = seekBarR.getProgress();
         int G = seekBarG.getProgress();
         int B = seekBarB.getProgress();
-        int contrast = contrastSeekBar.getProgress();
         int H = seekBarH.getProgress();
-        int saturation = saturationSeekBar.getProgress();
-        int lightness = lightnessSeekBar.getProgress();
 
         String color = ("#" + Integer.toHexString(A) + Integer.toHexString(R) + Integer.toHexString(G) + Integer.toHexString(B)).toUpperCase();
         colorText.setText("颜色值：" + color);
         colorView.setBackgroundColor(Color.parseColor(color));
 
         float hue = (H - 128f) * 1.0f / 128f * 180;
-        float mSaturationValue = saturation / 128f;
+        float mSaturationValue = saturationSeekBar.getProgress() / 128f;
         //亮度，值是处于0-255之间的整型数值
-        float brightness = lightness - 255;
+        float brightness = lightnessSeekBar.getProgress() - 255;
 
         //对比度
-        float contrastValue = (contrast + 1) * 1.0f;
-        imageView.setColorFilter(getFilter(contrastValue, hue, mSaturationValue, brightness, caculate(R), caculate(G), caculate(B), caculate(A)));
+        float contrast = contrastSeekBar.getProgress() * 0.1f;
+        imageView.setColorFilter(getFilter(contrast, hue, mSaturationValue, brightness, caculate(R), caculate(G), caculate(B), caculate(A)));
 
-        String info = "A:" + A + " R:" + R + " B:" + B + " G:" + G
+        String info = "A:" + A + "   R:" + R + "   B:" + B + "   G:" + G
                 + "\n色相:" + hue
-                + " 饱和度:" + mSaturationValue
-                + " 对比度:" + contrastValue
-                + " 亮度:" + brightness;
+                + "   饱和度:" + mSaturationValue
+                + "   对比度:" + contrast
+                + "   亮度:" + brightness;
         showInfoText.setText(info);
     }
 
