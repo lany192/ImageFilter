@@ -38,7 +38,8 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
     private SeekBar lightnessSeekBar;
     private SeekBar contrastSeekBar;
     private View colorView;
-    private TextView colorText, showInfoText, showFilterText;
+    private TextView colorText, showInfoText;
+    private String info = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,6 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         colorView = findViewById(R.id.color_view);
         colorText = findViewById(R.id.color_text);
         showInfoText = findViewById(R.id.show_info_text_view);
-        showFilterText = findViewById(R.id.show_filter_info_text);
 
         seekBarR = findViewById(R.id.bar_R);
         seekBarG = findViewById(R.id.bar_G);
@@ -124,12 +124,12 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         float contrast = contrastSeekBar.getProgress() * 0.1f;
         imageView.setColorFilter(getFilter(contrast, hue, mSaturationValue, brightness, caculate(R), caculate(G), caculate(B), caculate(A)));
 
-        String info = "A:" + A + "   R:" + R + "   B:" + B + "   G:" + G
+        info = "A:" + A + "   R:" + R + "   B:" + B + "   G:" + G
                 + "\n色相:" + hue
                 + "   饱和度:" + mSaturationValue
                 + "   对比度:" + contrast
                 + "   亮度:" + brightness;
-        showInfoText.setText(info);
+
     }
 
 
@@ -178,28 +178,24 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
         DecimalFormat format = new DecimalFormat("###0.0f");
         float result[] = filter.getArray();
-        Log.i("TAG", "滤镜参数------------------------\n");
-        String info = "  \n";
-        info += "\n";
+        info = info + "\nColorMatrix参数:\n";
         for (int i = 0; i < result.length; i++) {
             String item = format.format(result[i]);
             if (i == 0) {
-                info = "\n" + item + ", ";
+                info = info + "[" + item + ", ";
+            } else if (i == 19) {
+                info += (item + "]\n");
             } else {
                 info += (item + ", ");
             }
-            if (i == 4 || i == 9 || i == 14 || i == 19) {
+            if (i == 4 || i == 9 || i == 14 ) {
                 info += "\n";
             }
-            if (i == result.length - 1) {
-                info += "\n\n";
-            }
         }
-        Log.i("TAG", "\n" + info);
-        showFilterText.setText("ColorMatrix参数:" + info);
+        Log.i("TAG", info);
+        showInfoText.setText(info);
         return new ColorMatrixColorFilter(filter);
     }
-
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {

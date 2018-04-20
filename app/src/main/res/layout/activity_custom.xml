@@ -44,7 +44,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/test" />
 
@@ -53,8 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/black"
-            android:minHeight="35dp"
-            android:padding="2dp"
             android:textColor="@android:color/white"
             android:textSize="12sp" />
 
@@ -220,15 +218,5 @@
                 android:max="510"
                 android:progress="255" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/show_filter_info_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/black"
-            android:padding="2dp"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-
     </LinearLayout>
 </ScrollView>
