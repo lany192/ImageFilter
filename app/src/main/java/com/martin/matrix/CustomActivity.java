@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.caimuhao.rxpicker.RxPicker;
 import com.caimuhao.rxpicker.bean.ImageItem;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
@@ -36,7 +38,7 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
     private SeekBar lightnessSeekBar;
     private SeekBar contrastSeekBar;
     private View colorView;
-    private TextView colorText, showInfoText;
+    private TextView colorText, showInfoText, showFilterText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         colorView = findViewById(R.id.color_view);
         colorText = findViewById(R.id.color_text);
         showInfoText = findViewById(R.id.show_info_text_view);
+        showFilterText = findViewById(R.id.show_filter_info_text);
 
         seekBarR = findViewById(R.id.bar_R);
         seekBarG = findViewById(R.id.bar_G);
@@ -132,6 +135,9 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
     private ColorMatrixColorFilter getFilter(float contrast, float hue, float saturation, float brightness,
                                              float R, float G, float B, float A) {
+
+        Log.i("TAG", "contrast==" + contrast + " hue==" + hue + " saturation==" + saturation + " brightness==" + brightness);
+        Log.i("TAG", "A==" + A + " B==" + B + " G==" + G + " R==" + R);
         //设置色相
         ColorMatrix hueMatrix = new ColorMatrix();
         hueMatrix.setRotate(0, hue);
@@ -168,6 +174,29 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         filter.postConcat(saturationMatrix);
         filter.postConcat(hueMatrix);
         filter.postConcat(brightnessMatrix);
+
+
+        DecimalFormat format = new DecimalFormat("###0.0f");
+        float result[] = filter.getArray();
+        Log.i("TAG", "滤镜参数------------------------\n");
+        String info = "  \n";
+        info += "\n";
+        for (int i = 0; i < result.length; i++) {
+            String item = format.format(result[i]);
+            if (i == 0) {
+                info = "\n" + item + ", ";
+            } else {
+                info += (item + ", ");
+            }
+            if (i == 4 || i == 9 || i == 14 || i == 19) {
+                info += "\n";
+            }
+            if (i == result.length - 1) {
+                info += "\n\n";
+            }
+        }
+        Log.i("TAG", "\n" + info);
+        showFilterText.setText("ColorMatrix参数:" + info);
         return new ColorMatrixColorFilter(filter);
     }
 
