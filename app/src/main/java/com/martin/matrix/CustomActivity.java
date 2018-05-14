@@ -41,6 +41,7 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
     private View colorView;
     private TextView colorText, showInfoText;
     private String info = "";
+    private String colorMatrix = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +92,8 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
         findViewById(R.id.copy_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardUtils.setText(CustomActivity.this, info);
-                Toast.makeText(CustomActivity.this, "复制成功：" + info, Toast.LENGTH_SHORT).show();
+                ClipboardUtils.setText(CustomActivity.this, colorMatrix);
+                Toast.makeText(CustomActivity.this, "复制成功：" + colorMatrix, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -185,22 +186,22 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
         DecimalFormat format = new DecimalFormat("###0.0f");
         float result[] = filter.getArray();
-        info = info + "\nColorMatrix参数:\n";
+        colorMatrix = "\nColorMatrix参数:\n";
         for (int i = 0; i < result.length; i++) {
             String item = format.format(result[i]);
             if (i == 0) {
-                info = info + "[" + item + ", ";
+                colorMatrix = colorMatrix + "[" + item + ", ";
             } else if (i == 19) {
-                info += (item + "]\n");
+                colorMatrix += (item + "]\n");
             } else {
-                info += (item + ", ");
+                colorMatrix += (item + ", ");
             }
             if (i == 4 || i == 9 || i == 14) {
-                info += "\n";
+                colorMatrix += "\n";
             }
         }
-        Log.i("TAG", info);
-        showInfoText.setText(info);
+        Log.i("TAG", colorMatrix);
+        showInfoText.setText(info + colorMatrix);
         return new ColorMatrixColorFilter(filter);
     }
 
