@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.caimuhao.rxpicker.RxPicker;
 import com.caimuhao.rxpicker.bean.ImageItem;
@@ -87,6 +88,13 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        findViewById(R.id.copy_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardUtils.setText(CustomActivity.this, info);
+                Toast.makeText(CustomActivity.this, "复制成功：" + info, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -131,7 +139,6 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
                 + "   亮度:" + brightness;
 
     }
-
 
     private ColorMatrixColorFilter getFilter(float contrast, float hue, float saturation, float brightness,
                                              float R, float G, float B, float A) {
@@ -188,7 +195,7 @@ public class CustomActivity extends AppCompatActivity implements SeekBar.OnSeekB
             } else {
                 info += (item + ", ");
             }
-            if (i == 4 || i == 9 || i == 14 ) {
+            if (i == 4 || i == 9 || i == 14) {
                 info += "\n";
             }
         }
